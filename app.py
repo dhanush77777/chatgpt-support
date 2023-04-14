@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify 
 import requests
 import re
-from dotenv import load_dotenv
 import openai
 import json
 import os
@@ -11,8 +10,7 @@ from intents import intents
 from responses import responses
 import translators as ts
 
-load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = "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"
 
 with open('phrases.json', 'r') as f:
     phrases = json.load(f)
@@ -63,7 +61,7 @@ def pred():
 
 def tracking_order(awb):
     #awb="SRTP8501354758"
-    tracking_url= os.getenv("TRACKING_URL").format(awb)
+    tracking_url= "https://apiv2.shiprocket.in/v1/tracking/{}".format(awb)
     response = requests.get(tracking_url)
     try:
         if response.status_code == 200:
@@ -112,7 +110,7 @@ def is_number(input):
     return bool(re.search(pattern, input))
     
 def create_ticket(subject):
-    freshwork_endpoint_url = os.getenv("FRESHWORK_ENDPOINT_URL")
+    freshwork_endpoint_url = "https://shiprocketdemo.freshdesk.com/api/v2/tickets"
     headers = {
         "Content-Type": "application/json"
     }
@@ -123,7 +121,7 @@ def create_ticket(subject):
         "priority": 1,  # 1 is the priority code for "Low"
         "email": "user@example.com"
     }
-    key=os.getenv("FRESHWORKS_API_KEY")
+    key="Ifo1K69EBXPELX1DF5Sg"
     auth = (key, "x")
     response = requests.post(freshwork_endpoint_url, headers=headers, json=data, auth=auth)
     if response.status_code == 201:
